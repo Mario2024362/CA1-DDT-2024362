@@ -1,0 +1,6 @@
+Nakamoto, S. (2008) Bitcoin: a peer-to-peer electronic cash system. Available at: https://bitcoin.org/bitcoin.pdf (Accessed: [date]).
+Buterin, V. (2014) Ethereum white paper: a next-generation smart contract and decentralized application platform. Available at: https://ethereum.org/en/whitepaper/ (Accessed: [date]).
+Solidity Team (n.d.) Solidity documentation. Available at: https://docs.soliditylang.org (Accessed: [date]).
+Ethereum Foundation (n.d.) ERC-721 non-fungible token standard. Available at: https://eips.ethereum.org/EIPS/eip-721 (Accessed: [date]).
+Ethereum Foundation (n.d.) ERC-4337: account abstraction. Available at: https://eips.ethereum.org/EIPS/eip-4337 (Accessed: [date]).
+European Union (2016) Regulation (EU) 2016/679 (General Data Protection Regulation). Available at: https://eur-lex.europa.eu (Accessed: [date]).
