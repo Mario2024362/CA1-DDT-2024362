@@ -47,6 +47,20 @@ mapping(uint => Booking) public Bookings;
 //this won't allow any double book for rooms
 mapping(uint=> mapping(uint => bool)) public nightBooked;
 
+
+//Pay and reservation
+function bookRoomt(uint _roomId, uint _checkI, uint _checkO) public payable{
+ require(rooms[_roomId].exists, "This room is not exist");
+        require(_checkO > _checkI, "Check-out must be after check-in");
+
+//total of the price 
+
+uint nights = _checkO - _checkI;
+require(msg.value ==rooms[_roomId].price*nights, "something wrong was with the payment");
+
+}
+
+
 }
 
 
