@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: MIT
+//Mario Gerardo Cornejo Martinez 2024362
 pragma solidity ^0.8.19;
 
 //the Booking to paid in the hotel
@@ -83,7 +84,7 @@ require(b.guest == msg.sender, "This is not the booking you made");
 // Change for the status to add more security 
 b.status = Status.Cancell;
 
-//free the nights for the guests
+//free the space of the nights for the guests
 
 for(uint day = b.checkI; day<b.checkO;day++){
 nightBooked[b.roomId][day] = false;
@@ -99,6 +100,7 @@ require(success, "Refund has failed");
 function checkIn(uint _bookingId) public onlyHotel{
 Booking storage b = bookings[_bookingId];
 
+//This show if there is any error in the booking like not existing booking
 require(b.guest !=address(0), "This booking not exist");
 require(b.status ==Status.Booked, "Booking is not in state");
 
@@ -110,12 +112,13 @@ function checkOut(uint _bookingId) public onlyHotel{
 Booking storage b = bookings[_bookingId];
 
 require(b.guest != address(0), "Booking was not found");
-require(b.status == Status.Booked, "Guest has not check in");
+require(b.status == Status.Checked, "Guest has not check in");
 
-b.status = Status.Checked;
+b.status = Status.Complete;
 
-//The mone goes to the hotel
-payable(hotel).transfer(b.totalPrice);
+//The money goes to the hotel
+(bool success, ) = payable(hotel).call{value: b.totalPrice}("");
+    require(success, "Payment to hotel failed");
 }
 }   
 
