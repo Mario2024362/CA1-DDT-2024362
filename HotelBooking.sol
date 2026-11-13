@@ -38,12 +38,13 @@ uint roomId; //room id to know if was booked
 address guest; // the guest who paid
 uint checkI; // the check in of the room
 uint checkO;  //the check out
+uint totalPrice;
 Status status;  // the information of the booking
 
 }
 
 uint public bookingCount; //count the bookings
-mapping(uint => Booking) public Bookings;
+mapping(uint => Booking) public bookings;
 //this won't allow any double book for rooms
 mapping(uint=> mapping(uint => bool)) public nightBooked;
 
@@ -58,12 +59,33 @@ function bookRoomt(uint _roomId, uint _checkI, uint _checkO) public payable{
 uint nights = _checkO - _checkI;
 require(msg.value ==rooms[_roomId].price*nights, "something wrong was with the payment");
 
+for(uint day = _checkI; day< _checkO; day++){
+
+require(!nightBooked[_roomId] [day], "This room is already book");
+
+nightBooked[_roomId] [day] = true;
+
 }
 
+//save the money 
+bookingCount++;
+bookings[bookingCount] = Booking(_roomId, msg.sender, _checkI, _checkO, msg.value, Status.Booked);
 
 }
 
+//Cancel and Refund
+function cancelBooking(uint _bookingId) public{
+Booking storage b = bookings[_bookingId]; 
 
+require(b.guest == msg.sender, "This is not the booking you made");
+ require(b.status == Status.Booked, " The booking can not be cancel");
+
+
+
+
+}
+
+}
 
 
 
