@@ -31,7 +31,7 @@ contract HotelBooking {
 
 
 //the data for the reservation
-enum Status{Booked, Cheked, Complete, Cancell}
+enum Status{Booked, Checked, Complete, Cancell}
 
 struct Booking {
 uint roomId; //room id to know if was booked
@@ -80,12 +80,54 @@ Booking storage b = bookings[_bookingId];
 require(b.guest == msg.sender, "This is not the booking you made");
  require(b.status == Status.Booked, " The booking can not be cancel");
 
+// Change for the status to add more security 
+b.status = Status.Cancell;
 
+//free the nights for the guests
 
+for(uint day = b.checkI; day<b.checkO;day++){
+nightBooked[b.roomId][day] = false;
 
 }
 
+(bool success, ) = payable(msg.sender).call{value: b.totalPrice}("");
+require(success, "Refund has failed");
+
 }
+
+//Confirmation for the guest
+function checkIn(uint _bookingId) public onlyHotel{
+Booking storage b = bookings[_bookingId];
+
+require(b.guest !=address(0), "This booking not exist");
+require(b.status ==Status.Booked, "Booking is not in state");
+
+b.status = Status.Checked;
+
+}   
+//The confirmation of the stay is finish
+function checkOut(uint _bookingId) public onlyHotel{
+Booking storage b = bookings[_bookingId];
+
+require(b.guest != address(0), "Booking was not found");
+require(b.status == Status.Booked, "Guest has not check in");
+
+b.status = Status.Checked;
+
+//The mone goes to the hotel
+payable(hotel).transfer(b.totalPrice);
+}
+}   
+
+
+
+
+
+
+
+
+
+
 
 
 
